@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artikel Winbox Mikrotik - Jovian Ekasakta</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+       body {
+        font-family: 'Georgia', serif;
+        line-height: 1.8;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Background Animation */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g"><stop offset="20%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="50%" stop-color="%23ffffff" stop-opacity="0.05"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="20" cy="20" r="2" fill="url(%23g)"><animate attributeName="cy" values="20;80;20" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="40" r="1.5" fill="url(%23g)"><animate attributeName="cy" values="40;10;40" dur="4s" repeatCount="indefinite"/></circle><circle cx="40" cy="60" r="1" fill="url(%23g)"><animate attributeName="cy" values="60;30;60" dur="2s" repeatCount="indefinite"/></circle></svg>') repeat;
+        animation: float 20s infinite linear;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) translateX(0px); }
+        33% { transform: translateY(-10px) translateX(10px); }
+        66% { transform: translateY(5px) translateX(-5px); }
+        100% { transform: translateY(0px) translateX(0px); }
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .article-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        margin: 20px 0;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transform: translateY(50px);
+        opacity: 0;
+        animation: slideUp 1s ease-out forwards;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .article-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: shine 3s infinite;
+        pointer-events: none;
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    }
+
+    @keyframes slideUp {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .title {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #fd79a8);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 4s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+        position: relative;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes glow {
+        from { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
+        to { filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.6)); }
+    }
+
+    .author-info {
+        text-align: center;
+        margin-bottom: 30px;
+        font-style: italic;
+        color: #666;
+        animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .section {
+        margin: 30px 0;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        animation: slideInFromLeft 1s ease-out;
+    }
+
+    .section:last-child {
+        border-bottom: none;
+    }
+
+    @keyframes slideInFromLeft {
+        from {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .section-title {
+        font-size: 1.4em;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        position: relative;
+        padding-left: 20px;
+    }
+
+    .section-title::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(45deg, #3498db, #9b59b6);
+        border-radius: 2px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: translateY(-50%) scaleY(1); }
+        50% { transform: translateY(-50%) scaleY(1.2); }
+    }
+
+    .section-content {
+        text-align: justify;
+        font-size: 1em;
+        color: #555;
+        line-height: 1.8;
+    }
+
+    .conclusion {
+        font-weight: 500;
+        color: #2c3e50;
+        margin-top: 15px;
+        padding: 15px;
+        background: rgba(52, 152, 219, 0.1);
+        border-left: 4px solid #3498db;
+        border-radius: 5px;
+        animation: highlight 3s ease-in-out infinite;
+    }
+
+    @keyframes highlight {
+        0%, 100% { background: rgba(52, 152, 219, 0.1); }
+        50% { background: rgba(52, 152, 219, 0.2); }
+    }
+
+    .bibliography {
+        margin-top: 50px;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 15px;
+        animation: slideUp 1s ease-out 0.5s both;
+    }
+
+    .bibliography-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        text-align: center;
+        position: relative;
+    }
+
+    .bibliography-title::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(45deg, #3498db, #9b59b6);
+        animation: expand 2s ease-out;
+    }
+
+    @keyframes expand {
+        from { width: 0; }
+        to { width: 100px; }
+    }
+
+    .bibliography-item {
+        margin: 10px 0;
+        padding: 10px;
+        border-left: 3px solid #bdc3c7;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .bibliography-item:hover {
+        border-left-color: #3498db;
+        background: rgba(255, 255, 255, 0.5);
+        transform: translateX(10px);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Scrolling animation */
+    .scroll-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+        z-index: 1000;
+        transition: width 0.3s ease;
+    }
+
+    /* Floating elements */
+    .floating-element {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: floatingElements 15s infinite linear;
+    }
+
+    @keyframes floatingElements {
+        0% {
+            transform: translateY(100vh) translateX(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-20px) translateX(100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .title {
+            font-size: 1.8em;
+        }
+        
+        .container {
+            padding: 10px;
+        }
+        
+        .article-card {
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.2em;
+        }
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #3498db, #9b59b6);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #2980b9, #8e44ad);
+    }
+    .image-container {
+    text-align: center;
+    margin: 2rem 0;
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.responsive-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.image-caption {
+    font-style: italic;
+    color: #666;
+    margin: 1rem 0 0.5rem;
+}
+
+.image-source {
+    font-size: 0.9rem;
+    color: #888;
+    margin: 0.5rem 0;
+}
+</style>
+
+<div class="container">
+    <div class="article-card">
+        <h1 class="title">Menginstal aplikasi winbox dan mengakses perangkat mikrotik pertama kali</h1>
+        
+        <div class="author-info">
+            Pengalamatan oleh Jovian Ekasakta<br>
+            kelas XI TJKT 03, SMK Dwija Bhakti<br>
+            Dibimbing oleh Bapak Arief Wahyudin
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">1. Pengertian Winbox</h2>
+
+            <div class="image-container">
+    <img src="https://tse3.mm.bing.net/th/id/OIP.PrJ_YfaSqKaTwgUxNjhVcwHaEh?pid=Api&P=0&h=180" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">winbox</p>
+    <p class="image-source"><strong>Sumber:</strong> <a href="https://tse3.mm.bing.net/th/id/OIP.PrJ_YfaSqKaTwgUxNjhVcwHaEh?pid=Api&P=0&h=180">tse3.mm.bing.net</a></p>
+            </div>
+            <div class="section-content">
+                Dari sumber TKJ Club (2023), Winbox adalah utility yang digunakan untuk konektivitas dan konfigurasi MikroTik menggunakan MAC Address atau protokol IP. Dengan winbox kita dapat melakukan konfigurasi MikroTik RouterOS dan RouterBoard menggunakan mode GUI yang intuitif dan user-friendly.<br><br>
+                
+                Dari sumber Nevacloud (2023), Winbox adalah utilitas untuk menghubungkan dan mengkonfigurasi MikroTik menggunakan alamat MAC atau protokol IP yang memungkinkan konfigurasi MikroTik RouterOS dan RouterBoard dengan cepat dan mudah dalam mode GUI. Winbox dibangun dengan binary Win32, tetapi berjalan di Linux dan Mac OS X menggunakan Wine untuk kompatibilitas lintas platform.<br><br>
+                
+                Dari sumber Mikrotik Academy Universitas Pembangunan Panca Budi (2024), Winbox adalah sebuah aplikasi berbasis Windows yang biasa digunakan untuk konfigurasi Mikrotik, walaupun berbasis Windows, jika menggunakan operating system berbasis Linux atau macOS, tetap bisa gunakan Winbox dengan aplikasi converter seperti Wine dan lainnya. Tanpa aplikasi converter seperti wine dan yang lain nya, anda by default tidak bisa menggunakan winbox di platform linuxOS atau macOS secara native.<br><br>
+                
+                Dari sumber DomaiNesia (2024), Winbox adalah aplikasi manajemen jaringan yang dirancang oleh MikroTik, perusahaan teknologi yang dikenal karena solusi jaringan dan router yang handal. Aplikasi ini memberikan kontrol penuh terhadap manajemen pengguna dan keamanan dengan kemampuan membuat akun pengguna dengan hak akses yang ditentukan sesuai kebutuhan.
+                
+                <div class="conclusion">
+                    Kesimpulan: Winbox merupakan aplikasi utility grafis yang dikembangkan oleh MikroTik untuk memudahkan administrator jaringan dalam melakukan konfigurasi dan manajemen perangkat RouterOS melalui antarmuka GUI yang user-friendly, dengan kemampuan koneksi melalui MAC Address atau IP Address.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">2. Fungsi Winbox untuk Manajemen MikroTik</h2>
+
+                        <div class="image-container">
+    <img src="https://i.ytimg.com/vi/BOb6QOBgtYY/maxresdefault.jpg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">manajemen mikrotik</p>
+    <p class="image-source"><strong>Sumber:</strong> <a href="https://i.ytimg.com/vi/BOb6QOBgtYY/maxresdefault.jpg">i.ytimg.com</a></p>
+            </div>
+
+            <div class="section-content">
+                Dari sumber BilokEtam.com (2019), fungsi dari Winbox ini banyak sekali karena Winbox mudah di install mudah dipakai, ringan cepat dan tepat. Dengan Winbox dapat remote dengan MAC Address atau IP Address yang bisa diubah sesuai keinginan untuk fleksibilitas dalam koneksi.<br><br>
+                
+                Dari sumber yang sama, fungsi spesifik Winbox mencakup setting mikrotik router dalam mode GUI, setting bandwidth jaringan internet, memblokir sebuah website/situs, dan mempercepat pekerjaan. Aplikasi ini menyediakan tools konfigurasi yang akan digunakan untuk bekerja dengan sistem Linux standar dan memiliki fungsionalitas yang kuat dengan performa yang cepat.<br><br>
+                
+                Dari sumber DomaiNesia (2024), fungsi Winbox mencakup berbagai aspek yang mendukung pengelolaan dan konfigurasi perangkat jaringan dimana aplikasi ini memberikan akses langsung ke berbagai pengaturan perangkat MikroTik RouterOS dari konfigurasi dasar seperti pengaturan IP hingga konfigurasi tingkat lanjut seperti Quality of Service (QoS) atau VPN. Selain itu, selalu aktifkan protokol keamanan seperti SSH untuk koneksi jarak jauh dengan menghindari penggunaan protokol yang tidak aman dan memastikan akses dilindungi dengan kata sandi yang kuat.<br><br>
+                
+                Dari sumber yang sama, fungsi pemantauan kinerja memungkinkan melacak kesehatan jaringan secara real-time dengan grafik dan statistik yang terperinci untuk mengidentifikasi tren, mengatasi bottleneck, dan memastikan kinerja optimal. Hanya berikan akses kepada pengguna yang membutuhkannya dengan menggunakan manajemen pengguna Winbox untuk membuat akun dengan hak akses yang sesuai serta aktifkan audit logging untuk melacak aktivitas pengguna.<br><br>
+                
+                Dari sumber Network Data Sistem (2021), Winbox adalah software yang digunakan untuk administrasi Mikrotik RouterOS dengan mudah, cepat, dan didukung tampilan GUI dimana platform Winbox mendukung operating system Linux, MacOS dan Windows serta dapat digunakan untuk melakukan administrasi Mikrotik berbasis Web. Platform Winbox juga dapat digunakan untuk administrasi melalui web-based interface yang memberikan alternatif akses ketika aplikasi desktop tidak tersedia.
+                
+                <div class="conclusion">
+                    Kesimpulan: Winbox berfungsi sebagai alat manajemen komprehensif untuk RouterOS yang memungkinkan administrator melakukan konfigurasi jaringan, monitoring real-time, manajemen bandwidth, kontrol akses, dan pengaturan keamanan melalui antarmuka grafis yang intuitif dan responsif.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">3. Spesifikasi Minimum untuk Menjalankan Winbox</h2>
+                                    <div class="image-container">
+    <img src="https://help.mikrotik.com/docs/download/attachments/328129/winbox_loader_simple_.png?version=1&modificationDate=1570715133744&api=v2" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">winbox app</p>
+    <p class="image-source"><strong>Sumber:</strong> <a href="https://help.mikrotik.com/docs/download/attachments/328129/winbox_loader_simple_.png?version=1&modificationDate=1570715133744&api=v2">help.mikrotik.com</a></p>
+            </div>
+            <div class="section-content">
+                Dari sumber MikroTik Documentation (2024), Winbox adalah utility kecil yang memungkinkan administrasi MikroTik RouterOS menggunakan GUI yang cepat dan sederhana yang merupakan binary Win32/Win64 native tetapi dapat dijalankan di Linux dan macOS (OSX) menggunakan Wine. Aplikasi ini dirancang untuk memberikan kemudahan kepada para penggunanya dengan spesifikasi minimal yang sangat rendah.<br><br>
+                
+                Dari sumber yang sama, untuk menjalankan Winbox di Linux diperlukan software emulasi Wine dan memastikan bahwa paket font Microsoft terinstal, jika tidak mungkin akan melihat distorsi tampilan. Winbox menggunakan AES128-CBC-SHA sebagai algoritma enkripsi yang memerlukan WinBox versi 3.14 atau di atas untuk keamanan maksimal.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), pastikan bahwa Windows firewall diatur untuk mengizinkan koneksi Winbox melalui antarmuka jaringan Private dan/atau Public di Windows firewall, dan Windows (7/8) tidak mengizinkan koneksi MAC jika file and print sharing dinonaktifkan. WinBox.exe ditandatangani dengan sertifikat Extended Validation yang diterbitkan oleh SIA Mikrotīkls (MikroTik) untuk menjamin autentisitas dan keamanan aplikasi.<br><br>
+                
+                Dari sumber yang sama, sebagian besar driver jaringan tidak akan mengaktifkan IP stack kecuali perangkat host memiliki konfigurasi IP, sehingga perlu mengatur konfigurasi IPv4 pada perangkat host. WinBox menggunakan ECSRP untuk key exchange dan autentikasi yang memerlukan versi WinBox baru untuk fitur keamanan yang optimal.<br><br>
+                
+                Dari sumber MikroTik Community Forum (2024), WinBox 4 telah tersedia untuk Windows, macOS dan Linux sebagai versi beta pertama yang dapat digunakan pada ketiga platform tersebut. Versi terbaru ini menawarkan dukungan native untuk berbagai platform tanpa memerlukan emulasi tambahan seperti Wine.
+                
+                <div class="conclusion">
+                    Kesimpulan: Winbox memiliki spesifikasi sistem yang minimal karena dirancang sebagai utility ringan, dapat berjalan di Windows (native), Linux dan macOS (melalui Wine), memerlukan konfigurasi firewall yang tepat, dan untuk versi terbaru Winbox 4 sudah mendukung native pada ketiga platform utama tanpa emulasi.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">4. Mengunduh Winbox dari Situs Resmi MikroTik</h2>
+                                                <div class="image-container">
+    <img src="https://vectorseek.com/wp-content/uploads/2023/09/Mikrotik-Logo-Vector.svg-.png" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">mikrotik logo</p>
+    <p class="image-source"><strong>Sumber:</strong> <a href="https://vectorseek.com/wp-content/uploads/2023/09/Mikrotik-Logo-Vector.svg-.png">vectorseek.com</a></p>
+            </div>
+
+            <div class="section-content">
+                Dari sumber MikroTik Documentation (2024), untuk menginstal WinBox perlu pergi ke https://mikrotik.com/download, pilih WinBox yang diinginkan, simpan ke hard drive, dan buka aplikasinya. Jika sudah menjalankan RouterOS, upgrade ke versi terbaru dapat dilakukan dengan mengklik "Check For Updates" di QuickSet atau System > Packages menu di WebFig atau WinBox.<br><br>
+                
+                Dari sumber yang sama, WinBox loader dapat diunduh dari halaman download MikroTik dan ketika WinBox.exe diunduh, double click pada file tersebut, dan jendela WinBox loader akan muncul. Untuk mengelola router dapat menggunakan antarmuka web, atau mengunduh utilities maintenance termasuk Winbox untuk terhubung ke perangkat, Dude untuk memonitor jaringan dan Netinstall untuk recovery dan re-instalasi.<br><br>
+                
+                Dari sumber Mikrotik Academy Universitas Pembangunan Panca Budi (2024), untuk download winbox versi terbaru, perlu mengunjungi website official www.mikrotik.com lalu pilih versi yang terbaru yang sesuai bit operating system yang digunakan. Pastikan anda menggunakan winbox versi yang terbaru karena beberapa tipe hardware mikrotik, jika ingin dikonfigurasi, perlu menggunakan winbox yang versi terbaru untuk kompatibilitas optimal.<br><br>
+                
+                Dari sumber MajorGeeks (2024), Winbox dapat diunduh langsung dari router MikroTik dengan mengakses halaman download dengan memasukkan http://192.168.88.1 atau dengan mengetikkan alamat IP router ke browser web favorit. MikroTik Winbox adalah aplikasi resmi dari MikroTik untuk mengonfigurasi router MikroTik atau perangkat RouterOS yang diakui secara luas sebagai alat yang luar biasa untuk mengelola router MikroTik.<br><br>
+                
+                Dari sumber MikroTik Software Downloads (2024), untuk mengelola router dapat menggunakan antarmuka web, atau mengunduh utilities maintenance termasuk Winbox untuk terhubung ke perangkat, Dude untuk memonitor jaringan dan Netinstall untuk recovery dan re-instalasi. MikroTik membuat hardware dan software jaringan yang digunakan di hampir semua negara di dunia dengan misi membuat teknologi Internet yang ada lebih cepat, lebih powerful dan terjangkau untuk jangkauan pengguna yang lebih luas.
+                
+                <div class="conclusion">
+                    Kesimpulan: Winbox dapat diunduh secara gratis dari situs resmi MikroTik di mikrotik.com/download atau langsung dari router MikroTik melalui antarmuka web, tersedia dalam versi 32-bit dan 64-bit sesuai dengan arsitektur sistem operasi yang digunakan, dan merupakan bagian dari paket utility resmi MikroTik.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">5. Proses Instalasi Winbox di Windows</h2>
+                                                            <div class="image-container">
+    <img src="https://cdn.neowin.com/news/images/uploaded/2023/05/1682950344_windows_11_story.jpg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">windows logo</p>
+    <p class="image-source"><strong>Sumber:</strong> <a href="https://cdn.neowin.com/news/images/uploaded/2023/05/1682950344_windows_11_story.jpg">cdn.neowin.com</a></p>
+            </div>
+
+
+            <div class="section-content">
+                Dari sumber MikroTik Documentation (2024), ketika WinBox.exe diunduh, double click pada file tersebut, dan jendela WinBox loader akan muncul dengan dua mode WinBox loader yaitu simple dan advanced. Mulai dari WinBox v3.14, WinBox.exe ditandatangani dengan sertifikat Extended Validation yang diterbitkan oleh SIA Mikrotīkls (MikroTik) untuk memastikan keamanan aplikasi.<br><br>
+                
+                Dari sumber BilokEtam.com (2019), cara menggunakan winbox cukup mudah dimana tinggal download aplikasinya di situsnya mikrotik langsung dan tinggal menggunakannya sesuai keinginan. Fungsi winbox adalah sebagai aplikasi bantu (tool) untuk melakukan setting atau konfigurasi pada perangkat mikrotik dengan mudah dan cepat melalui GUI.<br><br>
+                
+                Dari sumber WinBox Download (2024), Winbox adalah program Windows gratis yang dibuat oleh MikroTik untuk membantu orang mengelola router MikroTik mereka dimana program ini pada dasarnya menyediakan tools konfigurasi yang akan digunakan untuk bekerja dengan sistem Linux standar. Developer merilis aplikasi ini sebagai freeware sehingga dapat digunakan tanpa harus membayar biaya satu kali atau biaya bulanan.<br><br>
+                
+                Dari sumber MajorGeeks (2024), MikroTik Winbox adalah aplikasi resmi dari MikroTik untuk mengonfigurasi router MikroTik atau perangkat RouterOS yang diakui secara luas sebagai alat yang luar biasa untuk mengelola router MikroTik dengan fungsionalitas yang kuat, performa yang cepat, dan antarmuka grafis yang user-friendly. Developer aplikasi WinBox Mikrotik telah bekerja keras untuk membuat interfacenya menjadi se-intuitif mungkin bagi sebagian besar pengguna.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), mulai dari WinBox v3.14, WinBox.exe ditandatangani dengan sertifikat Extended Validation yang diterbitkan oleh SIA Mikrotīkls (MikroTik) untuk memastikan keamanan aplikasi. WinBox memiliki dua mode: Simple dan Advanced dimana mode layout sederhana adalah default yang dapat diubah ke mode lanjutan dari menu Tools untuk mengakses parameter loader yang lebih detail.
+                
+                <div class="conclusion">
+                    Kesimpulan: Instalasi Winbox di Windows sangat sederhana karena merupakan portable application yang tidak memerlukan proses instalasi kompleks, cukup dengan mengunduh file WinBox.exe dari situs resmi MikroTik dan langsung menjalankannya dengan double-click, dilengkapi dengan sertifikat keamanan resmi untuk menjamin autentisitas aplikasi.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">6. Persiapan Perangkat MikroTik untuk Akses</h2>
+            <div class="section-content">
+                Dari sumber Network Data Sistem (2021), untuk mengatur Mikrotik dengan Winbox yang lengkap, pertama hubungkan port 2 ke modem Mikrotik, dan port 3 ke komputer, lalu di aplikasi Winbox perlu mengisi field Connect To dengan MAC address, Login dengan admin, dan Password kosong. Sebaiknya login mikrotik melalui webfig atau winbox dilakukan dengan reset konfigurasi default dan tambah pengguna baru serta ubah password admin untuk menjaga keamanan.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), untuk terhubung ke router masukkan IP atau MAC address router, spesifikasikan username dan password (jika ada) dan klik tombol Connect, dapat juga memasukkan nomor port setelah alamat IP dengan memisahkannya dengan titik dua seperti 192.168.88.1:9999. Direkomendasikan menggunakan alamat IP kapan pun memungkinkan karena sesi MAC menggunakan network broadcast dan tidak 100% dapat diandalkan.<br><br>
+                
+                Dari sumber Google Play Store (2024), biasanya tidak ada password default (biarkan kosong), atau ditentukan dalam dokumen yang disertakan dengan persyaratan router MikroTik yang menjalankan RouterOS v6 atau yang lebih baru. Default username pada router baru adalah admin dan biasanya tidak ada password default atau disebutkan dalam dokumen yang menyertai perangkat.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), sebagian besar driver jaringan tidak akan mengaktifkan IP stack kecuali perangkat host memiliki konfigurasi IP sehingga perlu mengatur konfigurasi IPv4 pada perangkat host. Koneksi WinBox MAC-ADDRESS memerlukan nilai MTU yang ditetapkan ke 1500, unfragmented untuk memastikan koneksi yang stabil dan dapat diandalkan.<br><br>
+                
+                Dari sumber Mikrotik Academy Universitas Pembangunan Panca Budi (2024), pertama kali login akan muncul menu yang dinamakan RouterOS Default Configuration dimana ketika menggunakan winbox pertama kali, routerboard sudah memiliki konfigurasi bawaan pabrik atau lebih dikenal dengan RouterOS Default Configuration. Jadi ketika menggunakan winbox pertama kali, routerboard sudah memiliki konfigurasi bawaan pabrik atau lebih dikenal dengan RouterOS Default Configuration, dimana tiap routerboard berbeda-beda tergantung perangkatnya tipe apa.
+                
+                <div class="conclusion">
+                    Kesimpulan: Persiapan perangkat MikroTik untuk akses Winbox meliputi koneksi fisik antara komputer dan router, konfigurasi IP pada komputer host, penggunaan kredensial default (username: admin, password: kosong), dan pemahaman bahwa RouterOS hadir dengan konfigurasi default yang dapat disesuaikan sesuai kebutuhan jaringan.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">7. Metode Koneksi (MAC Address / IP Address)</h2>
+                                                                        <div class="image-container">
+    <img src="https://eduinput.com/wp-content/uploads/2023/01/image-of-difference-between-mac-vs-ip-address.jpg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">MAC and IP </p>
+    <p class="image-source"><strong>Sumber:</strong> <a href="https://eduinput.com/wp-content/uploads/2023/01/image-of-difference-between-mac-vs-ip-address.jpg">eduinput.com</a></p>
+            </div>
+
+
+            <div class="section-content">
+                Dari sumber MikroTik Documentation (2024), direkomendasikan menggunakan alamat IP kapan pun memungkinkan karena sesi MAC menggunakan network broadcast dan tidak 100% dapat diandalkan. Winbox mendukung konektivitas IPv6 dimana untuk terhubung ke alamat IPv6 router, alamat harus ditempatkan dalam kurung kurawal persegi sama seperti di browser web saat menghubungkan ke server IPv6.<br><br>
+                
+                Dari sumber Network Data Sistem (2021), MAC Address bekerja di layer 2 sehingga dapat mengakses RouterOS tanpa perlu mengonfigurasi IP Address, namun MAC address tidak cukup stabil untuk digunakan secara konsisten dan sebaiknya hanya digunakan di awal konfigurasi. MAC Address sebaiknya hanya digunakan pada awal konfigurasi dan setelah itu disarankan beralih ke IP Address untuk koneksi yang lebih stabil.<br><br>
+                
+                Dari sumber BilokEtam.com (2019), dengan Winbox dapat remote dengan MAC Address atau IP Address yang bisa diubah sesuai keinginan. Pada Aplikasi Winbox Mikrotik itu sendiri sudah ditanamkan beberapa fitur dan fungsi yang dapat dimanfaatkan untuk mempermudah setting atau konfigurasi pada perangkat Mikrotik dengan fleksibilitas koneksi melalui berbagai metode.<br><br>
+                
+                Dari sumber ID-Networkers (2022), fitur dasar ketika ingin konek ke router adalah Connect To untuk memasukkan IP Router atau MAC Address Router yang diinginkan dengan Login berupa username dan password login ke router (default = admin) dan Password untuk router yang ingin dikoneksikan (default tidak diisi). Add/Set digunakan untuk menyimpan informasi berupa IP/MAC Router, Login, Password, ke menu Managed, jadi ketika konek ke router kedepannya, tidak perlu ketik lagi untuk efisiensi waktu.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), koneksi WinBox MAC-ADDRESS memerlukan nilai MTU yang ditetapkan ke 1500, unfragmented untuk memastikan koneksi yang stabil. Perlu diingat bahwa sebagian besar driver jaringan tidak akan mengaktifkan IP stack kecuali perangkat host memiliki konfigurasi IP, sehingga perlu mengatur konfigurasi IPv4 pada perangkat host terlebih dahulu.
+                
+                <div class="conclusion">
+                    Kesimpulan: Winbox mendukung dua metode koneksi utama yaitu melalui MAC Address yang bekerja di layer 2 dan cocok untuk konfigurasi awal, serta melalui IP Address yang lebih stabil dan direkomendasikan untuk penggunaan konsisten, dengan persyaratan teknis tertentu seperti MTU 1500 untuk koneksi MAC Address.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">8. Login Awal Menggunakan Winbox</h2>
+            <div class="section-content">
+                Dari sumber Network Data Sistem (2021), jalankan Winbox lalu klik Neighbors agar Winbox dapat menemukan alamat IP dan MAC address dari MikroTik RouterOS yang terhubung ke jaringan melalui broadcast, lalu masukkan dan klik connect kemudian masukkan user login dan password untuk mengakses router, kemudian Winbox akan mengunduh plugin dari router. Neighbors merupakan tombol yang digunakan untuk menemukan dan menampilkan perangkat MNDP (Mikrotik Neighborhood Discovery Protocol) atau CDP (Cisco Discovery Protocol).<br><br>
+                
+                Dari sumber yang sama, jika ini pertama kali Winbox akan mengunduh semua plugin yang akan memakan waktu, dan ketika proses unduhan plugin selesai, jendela utama Winbox akan ditampilkan. Managed adalah tombol yang digunakan untuk menampilkan entri yang telah disimpan untuk kemudahan akses di masa mendatang tanpa perlu mengetik ulang informasi koneksi.<br><br>
+                
+                Dari sumber ID-Networkers (2022), pertama kali login akan muncul menu yang dinamakan RouterOS Default Configuration. Session digunakan untuk menyimpan session winbox seperti menu apa saja yang ditampilkan jadi ketika konek lagi akan melanjutkan session tersebut untuk kontinuitas kerja yang lebih efisien.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), dapat menggunakan neighbor discovery untuk mendaftar router yang tersedia dengan menggunakan tab Neighbors, dari daftar router yang ditemukan dapat mengklik IP atau MAC address untuk koneksi. Antarmuka WinBox dirancang intuitif untuk sebagian besar pengguna yang terdiri dari main toolbar di bagian atas dan menu bar di sebelah kiri berisi daftar semua menu dan sub-menu yang tersedia.<br><br>
+                
+                Dari sumber Nevacloud (2023), fitur Neighbors digunakan untuk menemukan perangkat MikroTik Neighbor Discovery Protocol (MNDP) atau Cisco Discovery Protocol (CDP) dimana dengan fitur ini menemukan perangkat MikroTik RouterOS yang terhubung ke jaringan sangatlah mudah. Neighbor Discovery adalah salah satu fitur pada Winbox Mikrotik yang berfungsi untuk menemukan perangkat Mikrotik apa saja yang terhubung dengan PC/laptop di jaringan secara otomatis.
+                
+                <div class="conclusion">
+                    Kesimpulan: Login awal ke Winbox dapat dilakukan melalui fitur Neighbors untuk menemukan perangkat MikroTik secara otomatis, menggunakan kredensial default (admin tanpa password), proses pertama kali akan mengunduh plugin yang diperlukan dari router, dan setelah berhasil login akan ditampilkan menu RouterOS Default Configuration sebagai titik awal konfigurasi.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">9. Pengenalan Antarmuka Winbox</h2>
+            <div class="section-content">
+                Dari sumber MikroTik Documentation (2024), antarmuka WinBox dirancang intuitif untuk sebagian besar pengguna yang terdiri dari main toolbar di bagian atas tempat pengguna dapat menambahkan berbagai field info seperti CPU dan penggunaan memori, dan menu bar di sebelah kiri berisi daftar semua menu dan sub-menu yang tersedia. WinBox memiliki toolbar di bagian atas interface dimana dapat diklik kanan untuk menambahkan beberapa field info yang ingin tetap terlihat seperti status sistem real-time.<br><br>
+                
+                Dari sumber yang sama, daftar menu ini berubah tergantung pada paket apa yang diinstal, misalnya jika paket IPv6 dinonaktifkan, maka menu IPv6 dan semua sub-menunya tidak akan ditampilkan. Di sebelah kiri, terdapat menu bar yang berisi menu dan sub-menu yang berubah sesuai dengan paket yang terinstal untuk memberikan fleksibilitas dalam konfigurasi.<br><br>
+                
+                Dari sumber ID-Networkers (2022), selain dari "title bar", ada beberapa tampilan winbox yang lain yaitu Session, Settings, Dashboard, Undo, Redo, Safe Mode dimana beberapa fitur itu sering digunakan ketika menggunakan winbox untuk beberapa fungsi, misalnya Dashboard akan menampilkan beberapa menu untuk monitoring seperti CPU Usage, Memory, Time, Date. Safe Mode adalah mode yang digunakan untuk remote akses, biasanya digunakan untuk remote router di lokasi yang berbeda, jika terjadi kesalahan yang menyebabkan diskonek, maka akan terjadi rollback ke konfigurasi terakhir sebelum diskonek.<br><br>
+                
+                Dari sumber yang sama, Session untuk menyimpan session winbox seperti menu apa saja yang ditampilkan jadi ketika konek lagi akan melanjutkan session tersebut, dan Settings pada menu setting dapat menggunakan fitur penting seperti Zoom in atau Zoom out jika tulisan kekecilan atau kebesaran, atau Hide Password untuk melihatkan password yang berbentuk asterisk. Fitur-fitur ini dirancang untuk meningkatkan produktivitas dan kemudahan penggunaan dalam mengelola router MikroTik.<br><br>
+                
+                Dari sumber Nevacloud (2023), antarmuka terdiri dari toolbar utama di bagian atas tempat pengguna dapat menambahkan berbagai bidang info seperti CPU dan penggunaan memori, bilah menu di sebelah kiri berisi daftar semua menu dan sub-menu yang tersedia dimana daftar ini berubah tergantung pada paket apa yang diinstal, misalnya jika paket IPv6 dinonaktifkan maka menu IPv6 dan semua sub-menunya tidak akan ditampilkan. Area kerja terbesar terletak di sisi kanan tempat dapat melihat semua jendela menu yang terbuka dimana jendela-jendela ini tidak dapat ditarik keluar dari jendela utama karena interface MDI yang diadopsi WinBox Mikrotik.
+                
+                <div class="conclusion">
+                    Kesimpulan: Antarmuka Winbox memiliki desain yang intuitif dengan struktur utama meliputi toolbar atas untuk informasi sistem, menu sidebar kiri yang dinamis sesuai paket yang terinstal, serta fitur-fitur tambahan seperti Dashboard untuk monitoring, Session management, dan Settings untuk kustomisasi tampilan yang memudahkan administrator dalam navigasi dan pengelolaan router.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">10. Pengaturan Keamanan Awal (Ubah Password Admin)</h2>
+            <div class="section-content">
+                Dari sumber DomaiNesia (2024), Winbox menyediakan kontrol penuh terhadap manajemen pengguna dan keamanan dimana dapat membuat akun pengguna dengan hak akses yang ditentukan, memastikan hanya orang yang berwenang yang dapat mengonfigurasi atau mengelola perangkat. Ketika melakukan konfigurasi MikroTik, aspek keamanan menjadi hal yang sangat penting, termasuk selalu mengganti password default segera setelah instalasi awal.<br><br>
+                
+                Dari sumber yang sama, selalu aktifkan protokol keamanan seperti SSH untuk koneksi jarak jauh dengan menghindari penggunaan protokol yang tidak aman dan memastikan bahwa akses ke aplikasi dilindungi dengan kata sandi yang kuat. Batasi akses ke antarmuka manajemen dengan mengkonfigurasi firewall yang tepat dan nonaktifkan layanan yang tidak diperlukan untuk mengurangi risiko keamanan.<br><br>
+                
+                Dari sumber DomaiNesia (2024), hanya berikan akses kepada pengguna yang membutuhkannya dengan menggunakan manajemen pengguna Winbox untuk membuat akun dengan hak akses yang sesuai serta aktifkan audit logging untuk melacak aktivitas pengguna. Perbarui RouterOS secara berkala untuk mendapatkan perbaikan keamanan terbaru dan implementasikan pembatasan bandwidth dan traffic shaping untuk mencegah serangan DoS.<br><br>
+                
+                Dari sumber yang sama, selalu pastikan menggunakan versi Winbox terbaru karena pembaruan reguler tidak hanya memberikan fitur baru, tetapi juga memperbaiki kerentanan keamanan yang mungkin ada pada versi sebelumnya. Gunakan enkripsi untuk melindungi data yang sensitif dan pastikan semua aspek keamanan jaringan telah dikonfigurasi dengan benar untuk perlindungan optimal.<br><br>
+                
+                Dari sumber MikroTik Documentation (2024), WinBox menggunakan AES128-CBC-SHA sebagai algoritma enkripsi (memerlukan WinBox versi 3.14 atau di atas), WinBox.exe ditandatangani dengan sertifikat Extended Validation yang diterbitkan oleh SIA Mikrotīkls (MikroTik), dan WinBox menggunakan ECSRP untuk key exchange dan autentikasi yang memerlukan versi WinBox baru. Ada fitur Safe Mode dalam WinBox Mikrotik yang sangat berguna ketika akan melakukan sesuatu yang berisiko karena dapat melakukan rollback perubahan yang telah dibuat sejak mode tersebut diaktifkan untuk memberikan kepercayaan diri dalam bereksperimen dengan beberapa konfigurasi.
+                
+                <div class="conclusion">
+                    Kesimpulan: Pengaturan keamanan awal pada Winbox meliputi mengubah password default admin dengan password yang kuat, mengaktifkan protokol keamanan seperti SSH, membuat manajemen pengguna dengan hak akses terbatas sesuai kebutuhan, mengaktifkan audit logging, dan selalu menggunakan versi Winbox terbaru yang dilengkapi dengan enkripsi AES128-CBC-SHA dan sertifikat keamanan resmi.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-card bibliography">
+        <h2 class="bibliography-title">DAFTAR PUSTAKA</h2>
+        
+        <div class="bibliography-item">
+            BilokEtam.com. (2019). Pengenalan winbox dan fungsinya dan cara penggunaannya. Diakses pada 10 Agustus 2025, jam 11:12. https://biloketam88.wordpress.com/pengenalan-winbox-dan-fungsinya-dan-cara-penggunaannya/
+        </div>
+        
+        <div class="bibliography-item">
+            Cyberlink. (2023). Mengupas Menu Dalam Winbox Untuk Menjalankan Fungsi Dasar Mikrotik. Diakses pada 10 Agustus 2025, jam 12:30. https://cyberlink.co.id/blog/mengupas-menu-dalam-winbox-untuk-os-mikrotik/
+        </div>
+        
+        <div class="bibliography-item">
+            DomaiNesia. (2024). Winbox 101: Panduan Pemula untuk Konfigurasi Winbox. Diakses pada 10 Agustus 2025, jam 13:45. https://www.domainesia.com/berita/winbox-adalah/
+        </div>
+        
+        <div class="bibliography-item">
+            Google Play Store. (2024). MikroTik Pro - Apps on Google Play. Diakses pada 10 Agustus 2025, jam 14:20. https://play.google.com/store/apps/details?id=com.mikrotik.android.tikapp&hl=en_US
+        </div>
+        
+        <div class="bibliography-item">
+            ID-Networkers. (2022). Cara Menggunakan Winbox Terlengkap. Diakses pada 10 Agustus 2025, jam 13:15. https://www.idn.id/tutorial-cara-menggunakan-winbox/
+        </div>
+        
+        <div class="bibliography-item">
+            MajorGeeks. (2024). Download MikroTik Winbox. Diakses pada 10 Agustus 2025, jam 15:00. https://www.majorgeeks.com/files/details/mikrotik_winbox.html
+        </div>
+        
+        <div class="bibliography-item">
+            MikroTik Community Forum. (2024). WinBox 4 is here. Diakses pada 10 Agustus 2025, jam 14:50. https://forum.mikrotik.com/t/winbox-4-is-here/178358
+        </div>
+        
+        <div class="bibliography-item">
+            MikroTik Documentation. (2024). How to install WinBox - RouterOS knowledge base. Diakses pada 10 Agustus 2025, jam 12:15. https://help.mikrotik.com/docs/spaces/RKB/pages/6488069/How+to+install+WinBox
+        </div>
+        
+        <div class="bibliography-item">
+            MikroTik Documentation. (2024). WinBox - RouterOS. Diakses pada 10 Agustus 2025, jam 13:00. https://help.mikrotik.com/docs/spaces/ROS/pages/328129/WinBox
+        </div>
+        
+        <div class="bibliography-item">
+            MikroTik Software Downloads. (2024). MikroTik Routers and Wireless - Software. Diakses pada 10 Agustus 2025, jam 11:45. https://mikrotik.com/download
+        </div>
+        
+        <div class="bibliography-item">
+            Mikrotik Academy Universitas Pembangunan Panca Budi. (2024). Apa itu Winbox?. Diakses pada 10 Agustus 2025, jam 12:45. https://mikrotikacademy.pancabudi.ac.id/apa-itu-winbox/
+        </div>
+        
+        <div class="bibliography-item">
+            Nevacloud. (2023). Winbox Adalah : Pengertian, Fungsi dan Fiturnya!. Diakses pada 10 Agustus 2025, jam 11:30. https://nevacloud.com/blog/winbox-adalah/
+        </div>
+        
+        <div class="bibliography-item">
+            Network Data Sistem. (2021). Complete Review Winbox Mikrotik. Diakses pada 10 Agustus 2025, jam 14:00. https://nds.id/en/complete-review-winbox-mikrotik/
+        </div>
+        
+        <div class="bibliography-item">
+            Pengertian.co.id. (2023). Pengertian Winbox: Aplikasi Manajemen Mikrotik yang Efektif. Diakses pada 10 Agustus 2025, jam 15:23. https://www.pengertian.co.id/winbox
+        </div>
+        
+        <div class="bibliography-item">
+            TKJ Club. (2023). Pengertian dan Fungsi Winbox Untuk MikroTik. Diakses pada 10 Agustus 2025, jam 11:55. https://tkjclub.net/index.php/78-artikel/152-pengertian-dan-fungsi-winbox-untuk-mikrotik
+        </div>
+        
+        <div class="bibliography-item">
+            WinBox Download. (2024). WinBox - Free Download. Diakses pada 10 Agustus 2025, jam 14:35. https://winbox.en.download.it/
+        </div>
+    </div>
+</div>
+
+<script>
+    // Scroll indicator
+    window.addEventListener('scroll', () => {
+        const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        document.getElementById('scrollIndicator').style.width = scrolled + '%';
+    });
+
+    // Floating elements
+    function createFloatingElement() {
+        const element = document.createElement('div');
+        element.className = 'floating-element';
+        element.style.left = Math.random() * 100 + 'vw';
+        element.style.animationDelay = Math.random() * 5 + 's';
+        document.body.appendChild(element);
+        
+        setTimeout(() => {
+            element.remove();
+        }, 15000);
+    }
+
+    // Create floating elements periodically
+    setInterval(createFloatingElement, 2000);
+
+    // Smooth scroll animation on load
+    window.addEventListener('load', () => {
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = index * 0.2 + 's';
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    });
+
+    // Add parallax effect to background
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = document.body;
+        const speed = scrolled * 0.5;
+        parallax.style.backgroundPositionY = speed + 'px';
+    });
+</script>
+</body>
+</html>
