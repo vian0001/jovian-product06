@@ -354,7 +354,7 @@
 
 .image-caption {
     font-style: italic;
-    color: #666;
+    color: #666;a
     margin: 1rem 0 0.5rem;
 }
 
@@ -557,6 +557,12 @@
 
         <div class="section">
             <h2 class="section-title">8. Login Awal Menggunakan Winbox</h2>
+
+                                                                                                <div class="image-container">
+    <img src="WhatsApp Image 2025-08-18 at 08.24.19.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+
             <div class="section-content">
                 Dari sumber Network Data Sistem (2021), jalankan Winbox lalu klik Neighbors agar Winbox dapat menemukan alamat IP dan MAC address dari MikroTik RouterOS yang terhubung ke jaringan melalui broadcast, lalu masukkan dan klik connect kemudian masukkan user login dan password untuk mengakses router, kemudian Winbox akan mengunduh plugin dari router. Neighbors merupakan tombol yang digunakan untuk menemukan dan menampilkan perangkat MNDP (Mikrotik Neighborhood Discovery Protocol) atau CDP (Cisco Discovery Protocol).<br><br>
                 
@@ -595,6 +601,13 @@
 
         <div class="section">
             <h2 class="section-title">10. Pengaturan Keamanan Awal (Ubah Password Admin)</h2>
+
+                                                                                    <div class="image-container">
+    <img src="WhatsApp Image 2025-08-18 at 08.38.04.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+
+
             <div class="section-content">
                 Dari sumber DomaiNesia (2024), Winbox menyediakan kontrol penuh terhadap manajemen pengguna dan keamanan dimana dapat membuat akun pengguna dengan hak akses yang ditentukan, memastikan hanya orang yang berwenang yang dapat mengonfigurasi atau mengelola perangkat. Ketika melakukan konfigurasi MikroTik, aspek keamanan menjadi hal yang sangat penting, termasuk selalu mengganti password default segera setelah instalasi awal.<br><br>
                 
@@ -609,6 +622,101 @@
                 <div class="conclusion">
                     Kesimpulan: Pengaturan keamanan awal pada Winbox meliputi mengubah password default admin dengan password yang kuat, mengaktifkan protokol keamanan seperti SSH, membuat manajemen pengguna dengan hak akses terbatas sesuai kebutuhan, mengaktifkan audit logging, dan selalu menggunakan versi Winbox terbaru yang dilengkapi dengan enkripsi AES128-CBC-SHA dan sertifikat keamanan resmi.
                 </div>
+    <div class="article-card bibliography">
+        <h2 class="bibliography-title">cara cara mengakses/menggunakan mikrotik </h2>
+
+    <div class="section">
+    <h2>1. Mengakses Mikrotik Melalui WebFig</h2>
+    <p>WebFig adalah antarmuka web yang disediakan oleh Mikrotik untuk mengelola router melalui browser.</p>
+
+                                                                                                    <div class="image-container">
+    <img src="WhatsApp Image 2025-08-18 at 08.26.50.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+    <ul>
+        <li><strong>Buka Browser:</strong> Buka browser (Chrome, Firefox, dll.) di komputer yang terhubung ke jaringan Mikrotik.</li>
+        <li><strong>Masukkan Alamat IP:</strong> Ketik alamat IP Mikrotik di address bar, misalnya <code>http://192.168.88.1</code>.</li>
+        <li><strong>Login:</strong> Masukkan username dan password default Mikrotik (biasanya <code>admin</code> untuk username dan tidak ada password, atau <code>admin/admin</code>).</li>
+        <li><strong>Mulai Konfigurasi:</strong> Setelah login, Anda dapat mengakses menu konfigurasi Mikrotik melalui antarmuka web.</li>
+    </ul>
+    <p><strong>Catatan:</strong> Pastikan port HTTP (80) atau HTTPS (443) tidak diblokir.</p>
+</div>
+
+<div class="section">
+    <h2>2. Mengakses Mikrotik Melalui Winbox (v4 dan v3)</h2>
+
+        <img src="WhatsApp Image 2025-08-18 at 08.38.04.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+
+                <img src="WhatsApp Image 2025-08-18 at 08.24.19.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+
+    <p>Winbox adalah aplikasi desktop resmi dari Mikrotik untuk mengelola router.</p>
+    <ul>
+        <li><strong>Download Winbox:</strong> Unduh Winbox dari situs resmi Mikrotik (<a href="https://mikrotik.com/download" target="_blank">https://mikrotik.com/download</a>). Pilih versi yang sesuai (v3 untuk OS lama, v4 untuk OS terbaru).</li>
+        <li><strong>Buka Winbox:</strong> Jalankan aplikasi Winbox.</li>
+        <li><strong>Masukkan Alamat IP:</strong> Pada kolom "Connect To", masukkan alamat IP Mikrotik (misalnya <code>192.168.88.1</code>).</li>
+        <li><strong>Login:</strong> Masukkan username dan password Mikrotik.</li>
+        <li><strong>Mulai Konfigurasi:</strong> Setelah terhubung, Anda dapat mengakses semua fitur Mikrotik melalui antarmuka Winbox.</li>
+    </ul>
+    <p><strong>Perbedaan Winbox v3 dan v4:</strong></p>
+    <ul>
+        <li><strong>Winbox v3:</strong> Cocok untuk Mikrotik OS versi lama (sebelum RouterOS 7).</li>
+        <li><strong>Winbox v4:</strong> Cocok untuk Mikrotik OS versi terbaru (RouterOS 7 ke atas).</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>3. Mengakses Mikrotik Melalui SSH</h2>
+
+        <img src="WhatsApp Image 2025-08-18 at 08.30.53.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+
+    <p>SSH (Secure Shell) adalah metode akses yang aman untuk mengelola Mikrotik melalui terminal.</p>
+    <ul>
+        <li><strong>Siapkan SSH Client:</strong> Gunakan aplikasi seperti PuTTY (Windows) atau terminal bawaan (Linux/macOS).</li>
+        <li><strong>Buka SSH Client:</strong> Masukkan alamat IP Mikrotik dan port SSH (default: <code>22</code>).</li>
+        <li><strong>Login:</strong> Masukkan username dan password Mikrotik.</li>
+        <li><strong>Mulai Konfigurasi:</strong> Gunakan perintah CLI Mikrotik untuk mengelola router.</li>
+    </ul>
+    <p><strong>Contoh Perintah Dasar:</strong></p>
+    <ul>
+        <li><code>system resource</code> : Melihat penggunaan CPU, RAM, dan HDD.</li>
+        <li><code>ip address</code> : Melihat atau mengonfigurasi alamat IP.</li>
+        <li><code>interface</code> : Mengelola antarmuka jaringan.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>4. Mengakses Mikrotik Melalui Telnet</h2>
+
+        <img src="WhatsApp Image 2025-08-18 at 08.25.43.jpeg" alt="Deskripsi gambar" class="responsive-image">
+    <p class="image-caption">Picture BY Jovian</p>
+            </div>
+
+    <p>Telnet adalah metode akses yang lebih lama dan kurang aman dibandingkan SSH.</p>
+    <ul>
+        <li><strong>Aktifkan Telnet di Mikrotik:</strong> Buka Winbox atau SSH, lalu aktifkan Telnet dengan perintah <code>/ip service enable telnet</code>.</li>
+        <li><strong>Siapkan Telnet Client:</strong> Gunakan aplikasi seperti PuTTY atau terminal.</li>
+        <li><strong>Buka Telnet Client:</strong> Masukkan alamat IP Mikrotik dan port Telnet (default: <code>23</code>).</li>
+        <li><strong>Login:</strong> Masukkan username dan password Mikrotik.</li>
+        <li><strong>Mulai Konfigurasi:</strong> Gunakan perintah CLI Mikrotik untuk mengelola router.</li>
+    </ul>
+    <p><strong>Catatan:</strong> Telnet tidak aman karena data dikirim dalam bentuk teks biasa. Gunakan SSH sebagai alternatif yang lebih aman.</p>
+</div>
+
+<div class="section">
+    <h2>Tips Keamanan</h2>
+    <ul>
+        <li><strong>Ganti Password Default:</strong> Selalu ganti password default Mikrotik untuk mencegah akses tidak sah.</li>
+        <li><strong>Batasi Akses:</strong> Gunakan firewall untuk membatasi akses ke port manajemen (Winbox, SSH, Telnet, WebFig).</li>
+        <li><strong>Gunakan SSH:</strong> Utamakan penggunaan SSH daripada Telnet untuk keamanan yang lebih baik.</li>
+        <li><strong>Update RouterOS:</strong> Pastikan RouterOS selalu diperbarui ke versi terbaru untuk menghindari kerentanan.</li>
+    </ul>
+</div>
             </div>
         </div>
     </div>
